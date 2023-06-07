@@ -1,0 +1,32 @@
+<nz-table #basicTable [nzData]="tableList">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>问卷主题</th>
+      <th>参与人数</th>
+      <th>开始时间</th>
+      <th>结束时间</th>
+      <th>当前状态</th>
+      <th>操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let data of basicTable.data; let i = index">
+      <td>{{data.id}}</td>
+      <td>{{data.topic}}</td>
+      <td>{{data.vote}}</td>
+      <td>{{data.startTime}}</td>
+      <td>{{data.endTime}}</td>
+      <td>{{data.status | statusFormat}}</td>
+      <td>
+        <button nz-button nzType="link" (click)="edit(data)">编辑</button>
+        <button nz-button nzType="link" nzDanger (click)="removeAt(i, data)">删除</button>
+      </td>
+    </tr>
+  </tbody>
+</nz-table>
+<app-edit-modal 
+  [isVisible]="showEditModal" 
+  [editQuestionnaire]="editThis" 
+  (closeModal)="closeEditModal($event)"
+></app-edit-modal>

@@ -1,0 +1,33 @@
+.modal-form {
+  display: flex;
+  flex-direction: column;
+
+  .form-line {
+    display: flex;
+    margin: 15px 30px 0 0;
+
+    .form-label {
+      text-align: right;
+      flex-basis: 25%;
+      line-height: 32px;
+    }
+
+    .form-label-required {
+      text-align: right;
+      flex-basis: 25%;
+      line-height: 32px;
+
+      &::before {
+        content: '*';
+        font-size: 13px;
+        font-family: SimSun, sans-serif;
+        color: red;
+        margin-right: 4px;
+      }
+    }
+
+    .form-item {
+      flex-basis: 75%;
+    }
+  }
+}

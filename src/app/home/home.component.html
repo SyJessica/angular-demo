@@ -1,0 +1,11 @@
+<div class="page-body">
+  <app-create-modal 
+    (createQn)="addQnToList($event)">
+  </app-create-modal>
+  <app-qn-table 
+    class="home-table"
+    [tableList]="qnList">
+  </app-qn-table>
+</div>
+
+
