@@ -26,6 +26,7 @@ import { QnTableComponent } from './home/qn-table/qn-table.component';
 import { CreateModalComponent } from './home/create-modal/create-modal.component';
 import { StatusFormatPipe } from './pipes/status-format.pipe';
 import { EditModalComponent } from './home/edit-modal/edit-modal.component';
+import { DragDemoComponent } from './drag-demo/drag-demo.component';
 
 registerLocaleData(zh);
 
@@ -36,7 +37,8 @@ registerLocaleData(zh);
     QnTableComponent,
     CreateModalComponent,
     StatusFormatPipe,
-    EditModalComponent
+    EditModalComponent,
+    DragDemoComponent
   ],
   imports: [
     NzModalModule,
