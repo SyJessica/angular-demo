@@ -14,6 +14,10 @@ import { NzIconModule } from 'ng-zorro-antd/icon';
 import { NzDatePickerModule } from 'ng-zorro-antd/date-picker';
 import { NzSelectModule } from 'ng-zorro-antd/select';
 import { NzFormModule } from 'ng-zorro-antd/form';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { NzDrawerModule } from 'ng-zorro-antd/drawer';
+import { NzSwitchModule } from 'ng-zorro-antd/switch';
+import { NzDividerModule } from 'ng-zorro-antd/divider';
 
 import { registerLocaleData } from '@angular/common';
 import zh from '@angular/common/locales/zh';
@@ -38,7 +42,7 @@ registerLocaleData(zh);
     CreateModalComponent,
     StatusFormatPipe,
     EditModalComponent,
-    DragDemoComponent
+    DragDemoComponent,
   ],
   imports: [
     NzModalModule,
@@ -49,15 +53,19 @@ registerLocaleData(zh);
     NzDatePickerModule,
     NzSelectModule,
     NzFormModule,
+    DragDropModule,
+    NzDrawerModule,
+    NzSwitchModule,
+    NzDividerModule,
 
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
     FormsModule,
     HttpClientModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [{ provide: NZ_I18N, useValue: zh_CN }],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

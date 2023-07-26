@@ -1,0 +1,337 @@
+.example-container {
+  min-width: 300px;
+  max-width: 100%;
+  margin: 25px 25px 25px 25px;
+  display: flex;
+  flex-direction: column;
+  vertical-align: top;
+}
+
+.example-list {
+  position: fixed;
+  top: 69px;
+  border: solid 1px #ccc;
+  min-width: 300px;
+  min-height: 60px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.fake-list {
+  position: fixed;
+  top: 69px;
+  width: 300px;
+  border: solid 1px #ccc;
+  min-height: 60px;
+  background: white;
+  border-radius: 4px;
+  overflow: hidden;
+  display: block;
+}
+
+.edit-list {
+  min-width: 320px;
+  height: 100%;
+  background: white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 4px;
+}
+
+.example-box {
+  padding: 20px 10px;
+  color: rgba(0, 0, 0, 0.87);
+  border-bottom: solid 1px #ccc;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+}
+
+.example-box:last-child {
+  border: none;
+}
+
+.drag-box {
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  cursor: move;
+  background: white;
+  font-size: 14px;
+  border-radius: 4px;
+
+  &:hover {
+    border: dashed 1px #ccc;
+  }
+
+  ::ng-deep {
+    .ant-form-item-label > label.ant-form-item-no-colon::after {
+      content: " ";
+    }
+
+    .ant-form-item-label > label::after {
+      content: " ";
+    }
+
+    .ant-input[disabled] {
+      background-color: white;
+      cursor: move;
+    }
+
+    .ant-picker.ant-picker-disabled {
+      background: white;
+      cursor: move;
+    }
+
+    .ant-select-disabled.ant-select:not(.ant-select-customize-input)
+      .ant-select-selector {
+      background: white;
+      cursor: move;
+    }
+
+    .ant-select-disabled.ant-select:not(.ant-select-customize-input)
+      .ant-select-selector
+      input {
+      cursor: move;
+    }
+
+    .ant-picker-input > input[disabled] {
+      cursor: move;
+    }
+
+    .ant-form-item {
+      margin-bottom: 0px;
+      padding: 10px 0px;
+    }
+
+    .ant-picker {
+      width: 100%;
+    }
+
+    .ant-form-item-label > label {
+      height: initial;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-height: 15px;
+      max-width: 100%;
+      cursor: move;
+    }
+
+    .ant-form-item-label {
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 30px;
+      white-space: normal;
+      cursor: move;
+    }
+  }
+}
+
+.item-box {
+  padding: 10px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  background: white;
+  font-size: 14px;
+  border-radius: 4px;
+
+  ::ng-deep {
+    .ant-form-item-label > label.ant-form-item-no-colon::after {
+      content: " ";
+    }
+
+    .ant-form-item-label > label::after {
+      content: " ";
+    }
+
+    .ant-form-item {
+      margin-bottom: 0px;
+      padding: 10px 0px;
+    }
+
+    .ant-picker {
+      width: 100%;
+    }
+
+    .ant-form-item-label > label {
+      height: initial;
+      display: -webkit-box;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
+      line-height: 15px;
+      max-width: 100%;
+    }
+
+    .ant-form-item-label {
+      text-overflow: ellipsis;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 30px;
+      white-space: normal;
+    }
+
+    .ant-select-show-search.ant-select:not(.ant-select-customize-input)
+      .ant-select-selector {
+      max-height: 32px;
+    }
+
+    .ant-form-item {
+      flex-wrap: nowrap;
+    }
+
+    .ant-form-item-explain.ant-form-item-explain-error {
+      color: white;
+      font-size: 14px;
+      line-height: 30px;
+      white-space: nowrap;
+    }
+
+    .ant-form-item-explain,
+    .ant-form-item-extra {
+      position: absolute;
+      left: 34%;
+      bottom: -40px;
+      z-index: 10;
+
+      > div {
+        background-color: #e36732;
+        color: white;
+        border-radius: 2px 2px 0 0;
+        padding: 0 10px;
+        height: 30px;
+        line-height: 30px;
+        position: relative;
+        white-space: nowrap;
+
+        &::after {
+          content: "";
+          position: absolute;
+          display: block;
+          left: 50%;
+          top: 0;
+          transform: translate(-50%, -100%);
+          border: 8px solid #e36732;
+          border-top-color: transparent;
+          border-left-color: transparent;
+          border-right-color: transparent;
+        }
+      }
+    }
+  }
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+}
+
+.cdk-drag-placeholder {
+  opacity: 1;
+}
+
+.example-custom-placeholder {
+  opacity: 1;
+  min-height: 60px;
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.delete-icon {
+  color: red;
+}
+
+.selected-item {
+  position: relative;
+  box-sizing: border-box;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+}
+.selected-item &::before {
+  width: 3px;
+  color: #fff;
+  background: #1890ff;
+}
+
+.flex-col {
+  display: flex;
+  border: solid 1px #ccc;
+  border-radius: 4px;
+  min-height: 60px;
+  margin-bottom: 20px;
+}
+
+.container-menu {
+  display: flex;
+}
+
+.add-column-button {
+  margin-left: 40px;
+}
+
+.required-icon {
+  color: red;
+}
+
+::ng-deep {
+  .ant-drawer-left.ant-drawer-open,
+  .ant-drawer-right.ant-drawer-open {
+    width: 20%;
+  }
+  a.ant-btn {
+    padding: 0px;
+  }
+}
+
+.add-option-button {
+  width: 300px;
+  left: 14px;
+  color: #1890ff;
+  border: dashed 1px #1890ff;
+}
+
+.drag-option {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.option-drag-handle {
+  cursor: move;
+}

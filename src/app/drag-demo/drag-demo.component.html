@@ -1,1 +1,490 @@
-<p>drag-demo works!</p>
+<div style="display: flex" cdkDropListGroup>
+  <ng-template #validateTpl let-control>
+    <ng-container *ngIf="control.hasError('required')">必填项</ng-container>
+  </ng-template>
+
+  <div class="example-container">
+    <h2 style="position: fixed">组件</h2>
+    <div
+      cdkDropList
+      [cdkDropListData]="registerItems"
+      class="example-list"
+      cdkDropListSortingDisabled
+      [cdkDropListEnterPredicate]="noReturnPredicate"
+    >
+      <div
+        class="example-box"
+        *ngFor="let item of registerItems; let i = index"
+        cdkDrag
+        (cdkDragStarted)="startCopy(i)"
+        (cdkDragReleased)="endCopy()"
+      >
+        {{ item.title }}
+        <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+      </div>
+    </div>
+    <div class="fake-list" *ngIf="startCreate">
+      <div class="example-box" *ngFor="let item of registerItems">
+        {{ item.title }}
+      </div>
+    </div>
+  </div>
+
+  <div class="example-container">
+    <div class="container-menu">
+      <h2>编辑区</h2>
+      <button
+        class="add-column-button"
+        nz-button
+        nzType="primary"
+        (click)="addColumn()"
+      >
+        添加列
+      </button>
+      <button
+        class="add-column-button"
+        nz-button
+        nzType="default"
+        nzDanger
+        (click)="deleteColumn()"
+      >
+        删除列
+      </button>
+    </div>
+
+    <div class="flex-col">
+      <div *ngFor="let list of registerList">
+        <div
+          cdkDropList
+          [cdkDropListData]="list"
+          class="edit-list"
+          (cdkDropListDropped)="drop($event, list)"
+        >
+          <div
+            [style]="{ height: item.height * 60 + 'px' }"
+            class="drag-box"
+            [ngClass]="{
+              'selected-item': selectedId === item.id
+            }"
+            *ngFor="let item of list; let i = index"
+            cdkDrag
+            (mousedown)="selectItem(item)"
+          >
+            <div>
+              <ng-container [ngSwitch]="item.type">
+                <div
+                  *ngSwitchCase="registerType.Input"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control>
+                        <input
+                          *ngIf="item.height === 1"
+                          disabled
+                          nz-input
+                          placeholder="请输入"
+                        />
+                        <textarea
+                          *ngIf="item.height !== 1"
+                          disabled
+                          [style]="{
+                            resize: 'none',
+                            height: item.height * 60 - 30 + 'px'
+                          }"
+                          rows="2"
+                          nz-input
+                          placeholder="请输入"
+                        ></textarea>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div
+                  *ngSwitchCase="registerType.Select"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-select
+                          nzDisabled
+                          nzPlaceHolder="请选择"
+                        ></nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div
+                  *ngSwitchCase="registerType.DatePicker"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control>
+                        <nz-date-picker
+                          nzDisabled
+                          nzPlaceHolder="请选择日期"
+                        ></nz-date-picker>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <a
+              class="delete-icon"
+              *ngIf="selectedId === item.id"
+              (click)="removeItem(list, i)"
+            >
+              <span nz-icon nzType="close" nzTheme="outline"></span>
+            </a>
+
+            <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 表单填写演示区 -->
+    <div class="container-menu" *ngIf="false">
+      <h2>预览</h2>
+      <button
+        class="add-column-button"
+        nz-button
+        nzType="primary"
+        (click)="submit()"
+      >
+        提交
+      </button>
+    </div>
+
+    <form nz-form #infoForm="ngForm" *ngIf="false">
+      <div class="flex-col">
+        <div *ngFor="let list of registerList" class="edit-list">
+          <div
+            class="item-box"
+            [style]="
+              !item.relateRule.relatedOptionsId.length || showRelatedItem(item)
+                ? {
+                    height: item.height * 60 + 'px'
+                  }
+                : { display: 'none' }
+            "
+            *ngFor="let item of list; let i = index"
+          >
+            <div
+              *ngIf="
+                !item.relateRule.relatedOptionsId.length ||
+                showRelatedItem(item)
+              "
+            >
+              <ng-container [ngSwitch]="item.type">
+                <div
+                  *ngSwitchCase="registerType.Input"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control [nzErrorTip]="validateTpl">
+                        <input
+                          *ngIf="item.height === 1"
+                          nz-input
+                          [required]="item.isRequired"
+                          placeholder="请输入"
+                          [(ngModel)]="registerData[item.id]"
+                          [name]="item.id + ''"
+                        />
+                        <textarea
+                          *ngIf="item.height !== 1"
+                          [style]="{
+                            resize: 'none',
+                            height: item.height * 60 - 30 + 'px'
+                          }"
+                          rows="2"
+                          nz-input
+                          [required]="item.isRequired"
+                          placeholder="请输入"
+                          [(ngModel)]="registerData[item.id]"
+                          [name]="item.id + ''"
+                        ></textarea>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div
+                  *ngSwitchCase="registerType.Select"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control [nzErrorTip]="validateTpl">
+                        <nz-select
+                          [required]="item.isRequired"
+                          nzPlaceHolder="请选择"
+                          [nzMode]="item.isMultiSelect ? 'multiple' : 'default'"
+                          [nzMaxTagCount]="2"
+                          [(ngModel)]="registerData[item.id]"
+                          (ngModelChange)="updateFormData(item)"
+                          [name]="item.id + ''"
+                        >
+                          <nz-option
+                            *ngFor="let option of item.optionItems"
+                            [nzLabel]="option.label"
+                            [nzValue]="option.id"
+                          ></nz-option>
+                        </nz-select>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+                <div
+                  *ngSwitchCase="registerType.DatePicker"
+                  nz-row
+                  style="width: 280px"
+                >
+                  <div nz-col nzSpan="24">
+                    <nz-form-item>
+                      <nz-form-label
+                        nzSpan="7"
+                        [nzRequired]="item.isRequired"
+                        >{{ item.title }}</nz-form-label
+                      >
+                      <nz-form-control [nzErrorTip]="validateTpl">
+                        <nz-date-picker
+                          [required]="item.isRequired"
+                          nzPlaceHolder="请选择日期"
+                          [(ngModel)]="registerData[item.id]"
+                          [name]="item.id + ''"
+                        ></nz-date-picker>
+                      </nz-form-control>
+                    </nz-form-item>
+                  </div>
+                </div>
+              </ng-container>
+            </div>
+            <!-- <div class="example-custom-placeholder" *cdkDragPlaceholder></div> -->
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div>
+    <nz-drawer
+      [nzVisible]="drawerVisible"
+      [nzMask]="false"
+      nzPlacement="right"
+      nzTitle="设置"
+      (nzOnClose)="closeDrawer()"
+    >
+      <ng-container *nzDrawerContent class="right-drawer">
+        <form nz-form #editForm="ngForm">
+          <div nz-row [nzGutter]="8">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">标题</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <input
+                    nz-input
+                    placeholder="请输入控件标题"
+                    [(ngModel)]="selectedItem.title"
+                    (ngModelChange)="updateList()"
+                    name="title"
+                  />
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row [nzGutter]="8">
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">必填项</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-switch
+                    [(ngModel)]="selectedItem.isRequired"
+                    (ngModelChange)="updateList()"
+                    name="isRequired"
+                  >
+                  </nz-switch>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div
+            nz-row
+            [nzGutter]="8"
+            *ngIf="selectedItem.type === registerType.Select"
+          >
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">多选</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-switch
+                    [(ngModel)]="selectedItem.isMultiSelect"
+                    (ngModelChange)="updateList()"
+                    name="isMultiSelect"
+                  >
+                  </nz-switch>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div
+            nz-row
+            [nzGutter]="8"
+            *ngIf="selectedItem.type === registerType.Input"
+          >
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">行高</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-select
+                    [(ngModel)]="selectedItem.height"
+                    (ngModelChange)="updateList()"
+                    name="height"
+                  >
+                    <nz-option [nzValue]="1" nzLabel="高度1行"></nz-option>
+                    <nz-option [nzValue]="2" nzLabel="高度2行"></nz-option>
+                    <nz-option [nzValue]="3" nzLabel="高度3行"></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div nz-row [nzGutter]="8">
+            <nz-divider></nz-divider>
+            <h4><b>显示条件</b></h4>
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">关联组件</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-select
+                    nzAllowClear
+                    [(ngModel)]="selectedItem.relateRule.relatedComponentId"
+                    (ngModelChange)="relatedComponentChange()"
+                    name="relatedComponent"
+                  >
+                    <nz-option
+                      *ngFor="let option of relatedComponentList"
+                      [nzLabel]="option.title"
+                      [nzValue]="option.id"
+                    ></nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+            <div nz-col nzSpan="24">
+              <nz-form-item>
+                <nz-form-label nzSpan="6">关联选项</nz-form-label>
+                <nz-form-control nzSpan="18">
+                  <nz-select
+                    nzMode="multiple"
+                    [(ngModel)]="selectedItem.relateRule.relatedOptionsId"
+                    (ngModelChange)="updateList()"
+                    name="relatedOptions"
+                  >
+                    <nz-option
+                      *ngFor="let option of relatedOptionsList"
+                      [nzLabel]="option.label"
+                      [nzValue]="option.id"
+                    >
+                    </nz-option>
+                  </nz-select>
+                </nz-form-control>
+              </nz-form-item>
+            </div>
+          </div>
+          <div
+            nz-row
+            [nzGutter]="8"
+            *ngIf="selectedItem.type === registerType.Select"
+          >
+            <nz-divider></nz-divider>
+            <h4><b>选项设置</b></h4>
+            <div nz-col nzSpan="24">
+              <div
+                cdkDropList
+                [cdkDropListData]="selectedItem.optionItems"
+                (cdkDropListDropped)="optionDrop($event)"
+                (mouseleave)="unHoverOption()"
+              >
+                <div
+                  class="drag-option"
+                  *ngFor="let item of selectedItem.optionItems; let i = index"
+                  (mouseenter)="hoverOption(item)"
+                  cdkDrag
+                >
+                  <div
+                    [style]="hoveredOption.id === item.id ? {} : { opacity: 0 }"
+                    class="option-drag-handle"
+                    cdkDragHandle
+                  >
+                    <span nz-icon nzType="holder" nzTheme="outline"></span>
+                  </div>
+
+                  <input
+                    nz-input
+                    placeholder="请输入选项名称"
+                    [(ngModel)]="item.label"
+                    (ngModelChange)="updateList()"
+                    [name]="item.id + ''"
+                  />
+                  <a nz-button nzType="text" (click)="removeOption(i, item.id)">
+                    <span
+                      [style]="
+                        hoveredOption.id === item.id
+                          ? { color: 'red' }
+                          : { opacity: 0 }
+                      "
+                      nz-icon
+                      nzType="delete"
+                      nzTheme="outline"
+                    ></span
+                  ></a>
+                </div>
+              </div>
+              <a
+                nz-button
+                nzType="text"
+                class="add-option-button"
+                (click)="addOption()"
+                ><span nz-icon nzType="plus" nzTheme="outline"></span
+              ></a>
+            </div>
+          </div>
+        </form>
+      </ng-container>
+    </nz-drawer>
+  </div>
+</div>
